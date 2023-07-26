@@ -1,5 +1,6 @@
 from instagrapi import Client
 import random as rand
+import time
 
 moviename = "Barbie"
 myname = "Luke"
@@ -21,7 +22,6 @@ with open("actors.txt", "r") as f:
 client = Client()
 client.load_settings("session.json")
 client.login(user, pasw) # this doesn't actually login from scratch, just uses the session. dw about it basically
-
 # see if session is valid, if not we have to login again
 try: 
     client.get_timeline_feed()
@@ -34,5 +34,7 @@ for name, handle in cast.items():
         letter = f.read().replace("[Actor's Name]", name.split(" ")[0])
         letter = letter.replace("[Movie Title]", moviename)
         letter = letter.replace("[Your Name]", myname)
-
-client.direct_send("hello", [int(client.user_id_from_username("bigfloppa.irony"))])
+        print(letter)
+        client.direct_send(letter, [int(client.user_id_from_username(handle))])
+        f.close()
+    time.sleep(rand.uniform(3, 7))
